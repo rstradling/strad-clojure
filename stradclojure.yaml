@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strad-clojure 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: strad-clojure 
+  template:
+    metadata:
+      labels:
+        app: strad-clojure 
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: strad-clojure 
+        image: stradclojure.azurecr.io/stradclojure:1.0.0
+        ports:
+        - containerPort: 3000
+        env:
+        resources:
+          requests:
+            cpu: 1m
+            memory: 50Mi
+          limits:
+            cpu: 75m
+            memory: 128Mi
+        startupProbe:
+          httpGet:
+            path: /
+            port: 3000
+          failureThreshold: 5
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          failureThreshold: 3
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          failureThreshold: 5
+          initialDelaySeconds: 3
+          periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: strad-clojure
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: strad-clojure
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: strad-clojure
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000 
+  selector:
+    app: strad-clojure 
+  type: LoadBalancer
