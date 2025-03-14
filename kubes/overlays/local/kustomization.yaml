@@ -10,5 +10,5 @@ resources:
   - ./postgres-deployment.yaml
   - ./postgres-service.yaml
 namespace: default
-#patches:
-#  - path: deployment.yaml
+patches:
+  - path: deployment.yaml

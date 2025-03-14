@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: campaigns 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: campaigns 
+  template:
+    metadata:
+      labels:
+        app: campaigns 
+    spec:
+      containers:
+      - name: campaigns 
+        image: campaigns:latest
+        ports:
+        - containerPort: 3000
