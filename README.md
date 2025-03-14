@@ -1,22 +1,27 @@
-# clojuretry
+# campaigns 
 
-A Clojure library designed to ... well, that part is up to you.
+Right now just messing around with creating a clojure app as it has been a while.  Purpose is to explore an opensource Campaign library 
 
 ## Usage
 
-FIXME
+### Running locally
 
-## License
+#### Prerequisites
 
-Copyright © 2025 FIXME
+* Install [colima](https://github.com/abiosoft/colima) or some other way to use containerd images and kubernetes.
+* Install nerdctl
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
+#### Building
 
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+Build the docker image.  Please *note* if using colima you must specify the image namespace to be `k8s.io` for the kubernetes resources to find it
+```
+nerdctl build -f Dockerfile -t campaigns:latest --namespace k8s.io .
+```
+
+#### Running
+
+```
+kubectl create namespace campaigns
+kubectl apply -k kubes/overlays/local
+```
+
